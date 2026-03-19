@@ -33,7 +33,7 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Core test 1 Bonferroni and Holm
-        id: core-test-1
+        id: coretest1
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -44,7 +44,7 @@ jobs:
           max-score: 18
 
       - name: Core test 2 BH and BY
-        id: core-test-2
+        id: coretest2
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -55,7 +55,7 @@ jobs:
           max-score: 18
 
       - name: Core test 3 FWER FDR power helpers
-        id: core-test-3
+        id: coretest3
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -66,7 +66,7 @@ jobs:
           max-score: 12
 
       - name: Core test 4 summary metrics
-        id: core-test-4
+        id: coretest4
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -77,7 +77,7 @@ jobs:
           max-score: 12
 
       - name: Core test 5 required project files
-        id: core-test-5
+        id: coretest5
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -88,7 +88,7 @@ jobs:
           max-score: 5
 
       - name: Core test 6 report references pipeline script
-        id: core-test-6
+        id: coretest6
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -102,7 +102,7 @@ jobs:
         run: uv run python scripts/run_cleaning.py && uv run python scripts/run_analysis.py && uv run quarto render report/solution.qmd
 
       - name: Report test 1 output files
-        id: report-test-1
+        id: reporttest1
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -113,7 +113,7 @@ jobs:
           max-score: 10
 
       - name: Report test 2 results keys
-        id: report-test-2
+        id: reporttest2
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -124,7 +124,7 @@ jobs:
           max-score: 10
 
       - name: Report test 3 rendered html sections
-        id: report-test-3
+        id: reporttest3
         continue-on-error: true
         uses: classroom-resources/autograding-command-grader@v1
         with:
@@ -139,17 +139,17 @@ jobs:
         id: grading-reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          CORE-TEST-1_RESULTS: "${{ steps.core-test-1.outputs.result }}"
-          CORE-TEST-2_RESULTS: "${{ steps.core-test-2.outputs.result }}"
-          CORE-TEST-3_RESULTS: "${{ steps.core-test-3.outputs.result }}"
-          CORE-TEST-4_RESULTS: "${{ steps.core-test-4.outputs.result }}"
-          CORE-TEST-5_RESULTS: "${{ steps.core-test-5.outputs.result }}"
-          CORE-TEST-6_RESULTS: "${{ steps.core-test-6.outputs.result }}"
-          REPORT-TEST-1_RESULTS: "${{ steps.report-test-1.outputs.result }}"
-          REPORT-TEST-2_RESULTS: "${{ steps.report-test-2.outputs.result }}"
-          REPORT-TEST-3_RESULTS: "${{ steps.report-test-3.outputs.result }}"
+          CORETEST1_RESULTS: "${{ steps.coretest1.outputs.result }}"
+          CORETEST2_RESULTS: "${{ steps.coretest2.outputs.result }}"
+          CORETEST3_RESULTS: "${{ steps.coretest3.outputs.result }}"
+          CORETEST4_RESULTS: "${{ steps.coretest4.outputs.result }}"
+          CORETEST5_RESULTS: "${{ steps.coretest5.outputs.result }}"
+          CORETEST6_RESULTS: "${{ steps.coretest6.outputs.result }}"
+          REPORTTEST1_RESULTS: "${{ steps.reporttest1.outputs.result }}"
+          REPORTTEST2_RESULTS: "${{ steps.reporttest2.outputs.result }}"
+          REPORTTEST3_RESULTS: "${{ steps.reporttest3.outputs.result }}"
         with:
-          runners: core-test-1,core-test-2,core-test-3,core-test-4,core-test-5,core-test-6,report-test-1,report-test-2,report-test-3
+          runners: coretest1,coretest2,coretest3,coretest4,coretest5,coretest6,reporttest1,reporttest2,reporttest3
 
       - name: Generate feedback content
         if: always()
@@ -160,15 +160,15 @@ jobs:
           import os
 
           ORDER = [
-              "core-test-1",
-              "core-test-2",
-              "core-test-3",
-              "core-test-4",
-              "core-test-5",
-              "core-test-6",
-              "report-test-1",
-              "report-test-2",
-              "report-test-3",
+              "coretest1",
+              "coretest2",
+              "coretest3",
+              "coretest4",
+              "coretest5",
+              "coretest6",
+              "reporttest1",
+              "reporttest2",
+              "reporttest3",
           ]
 
           rows = []
@@ -208,15 +208,15 @@ jobs:
               f.write(f"| Total |  | {total}/100 |\n")
           PY
         env:
-          CORE_TEST_1_RESULT: ${{ steps.core-test-1.outputs.result }}
-          CORE_TEST_2_RESULT: ${{ steps.core-test-2.outputs.result }}
-          CORE_TEST_3_RESULT: ${{ steps.core-test-3.outputs.result }}
-          CORE_TEST_4_RESULT: ${{ steps.core-test-4.outputs.result }}
-          CORE_TEST_5_RESULT: ${{ steps.core-test-5.outputs.result }}
-          CORE_TEST_6_RESULT: ${{ steps.core-test-6.outputs.result }}
-          REPORT_TEST_1_RESULT: ${{ steps.report-test-1.outputs.result }}
-          REPORT_TEST_2_RESULT: ${{ steps.report-test-2.outputs.result }}
-          REPORT_TEST_3_RESULT: ${{ steps.report-test-3.outputs.result }}
+          CORETEST1_RESULT: ${{ steps.coretest1.outputs.result }}
+          CORETEST2_RESULT: ${{ steps.coretest2.outputs.result }}
+          CORETEST3_RESULT: ${{ steps.coretest3.outputs.result }}
+          CORETEST4_RESULT: ${{ steps.coretest4.outputs.result }}
+          CORETEST5_RESULT: ${{ steps.coretest5.outputs.result }}
+          CORETEST6_RESULT: ${{ steps.coretest6.outputs.result }}
+          REPORTTEST1_RESULT: ${{ steps.reporttest1.outputs.result }}
+          REPORTTEST2_RESULT: ${{ steps.reporttest2.outputs.result }}
+          REPORTTEST3_RESULT: ${{ steps.reporttest3.outputs.result }}
 
       - name: Publish run summary
         if: always()
